@@ -6,3 +6,6 @@ public interface IStack<T> {
     T pop() throws ADTException;
     boolean isEmpty();
 }
+
+//this serves as the execution stack with my stack
+//holds the commands that are waiting to be executed LIFO stuff

@@ -16,3 +16,7 @@ public record CompStmt(IStmt first, IStmt second) implements IStmt {
         return "(" + first + "; " + second + ")";
     }
 }
+
+//represents s1 and s2
+//since the stack is last in first out we push s2 girst then s1
+//this ensures that s1 ends up on top of the stack and gets executed first

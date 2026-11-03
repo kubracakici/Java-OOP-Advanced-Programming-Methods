@@ -5,3 +5,5 @@ public class ExpressionException extends MyException {
         super(message);
     }
 }
+
+//for things like division by zero, non integer inputs and undefined variables etc.

@@ -26,9 +26,15 @@ public record ArithExp(ArithOp op, IExp left, IExp right) implements IExp {
             case DIV -> {
                 if (n2 == 0) throw new ExpressionException("division by zero");
                 yield new IntValue(n1 / n2);
+                //is used inside multiline blocks to return a value from specific branch, ex. throwing division by zero error
             }
         };
     }
+
+    //pattern matching with instanceof -
+    //it combines type checking and casting into a single operation
+    //it checks if v1 is an intvalue and directly extracts its internal
+    //primitive value into n1 w/out explicit casting
 
     @Override
     public String toString() {

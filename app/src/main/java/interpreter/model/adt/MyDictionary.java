@@ -24,3 +24,8 @@ public class MyDictionary<K, V> implements IDictionary<K, V> {
 
     @Override public String toString() { return map.toString(); }
 }
+
+
+//we used hash map here
+//hashmap is something that holds the key-value stuff in java so we used it here
+// for example: "v" -> IntValue(2) key is v value is 2

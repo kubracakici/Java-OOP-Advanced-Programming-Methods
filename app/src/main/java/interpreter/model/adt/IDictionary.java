@@ -7,3 +7,5 @@ public interface IDictionary<K, V> {
     void put(K key, V value);
     void update(K key, V value) throws ADTException;
 }
+
+//stocks the var names and their currnt values - a dictionary type

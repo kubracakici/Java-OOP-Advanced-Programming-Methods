@@ -13,3 +13,5 @@
 out/
 .vscode/
 .DS_Store
+log*.txt
+out/

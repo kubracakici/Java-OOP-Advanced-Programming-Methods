@@ -5,3 +5,6 @@ public class MyException extends Exception {
         super(message);
     }
 }
+
+//this is main error class
+//the other exception classes - inheritance of this class

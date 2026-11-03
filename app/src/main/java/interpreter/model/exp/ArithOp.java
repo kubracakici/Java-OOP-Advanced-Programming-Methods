@@ -14,3 +14,7 @@ public enum ArithOp {
         return symbol;
     }
 }
+
+//enum -> defines a type-safe of constatns
+//instead of using raw strings like "+" or ints like 1,
+// enum prevents invali opr vals at compile time

@@ -17,3 +17,6 @@ public class MyList<T> implements IList<T> {
     @Override public int size() { return list.size(); }
     @Override public String toString() { return list.toString(); }
 }
+
+//as far as the program continues to execute, this saves the print command outputs
+//every output goes to the end of the list with add

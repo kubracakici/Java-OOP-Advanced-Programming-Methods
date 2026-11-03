@@ -26,3 +26,7 @@ public record AssignStmt(String id, IExp exp) implements IStmt {
         return id + "=" + exp;
     }
 }
+
+//this checks if the var is decleared in symtable if not -> statement exception
+//it verifies that the type of the evaluated value matches the decleared type of the variable
+//if it is valid it updates the value in symtable

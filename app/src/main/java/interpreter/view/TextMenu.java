@@ -12,7 +12,7 @@ public class TextMenu {
     public void start() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("\n--- TOY INTERPRETER ---");
+            System.out.println("\n\t TOY INTERPRETER\t");
             System.out.println("1. Program 1: int v; v=2; print(v)");
             System.out.println("2. Program 2: int a; int b; a=2+3*5; b=a+1; print(b)");
             System.out.println("3. Program 3: bool a; int v; a=true; (if a then v=2 else v=3); print(v)");
