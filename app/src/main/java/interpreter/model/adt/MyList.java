@@ -16,6 +16,7 @@ public class MyList<T> implements IList<T> {
 
     @Override public int size() { return list.size(); }
     @Override public String toString() { return list.toString(); }
+    @Override public List<T> toList() {return List.copyOf(list);}
 }
 
 //as far as the program continues to execute, this saves the print command outputs
