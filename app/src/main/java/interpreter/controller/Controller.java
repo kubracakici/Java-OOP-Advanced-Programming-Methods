@@ -15,6 +15,7 @@ public class Controller {
         this.displayFlag = displayFlag;
     }
 
+    // Pops the top statement and executes it
     public PrgState oneStep(PrgState state) throws MyException {
         var stack = state.getExeStack();
         if (stack.isEmpty()) {
@@ -24,16 +25,16 @@ public class Controller {
         return crtStmt.execute(state);
     }
 
-    public void allStep() throws MyException ,
-    {
+    // Runs the whole program and logs the state after every step
+    public void allStep() throws MyException {
         PrgState prg = repo.getCrtPrg();
-        repo.logPrgStateExec();                 // log the initial state
+        repo.logPrgStateExec();             // log the initial state
         if (displayFlag) {
             System.out.println(prg);
         }
         while (!prg.getExeStack().isEmpty()) {
             oneStep(prg);
-            repo.logPrgStateExec();             // log the state after every step
+            repo.logPrgStateExec();         // log the state after every step
             if (displayFlag) {
                 System.out.println(prg);
             }

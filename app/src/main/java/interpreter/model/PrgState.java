@@ -19,18 +19,24 @@ public class PrgState {
     private IDictionary<StringValue, BufferedReader> fileTable;
     private final IStmt originalProgram;
 
-    public PrgState(IStack<IStmt> exeStack, IDictionary<String, IValue> symTable, IList<IValue> out,IDictionary<StringValue, BufferedReader> fileTable, IStmt program) {
+    public PrgState(IStack<IStmt> exeStack, IDictionary<String, IValue> symTable, IList<IValue> out,
+                    IDictionary<StringValue, BufferedReader> fileTable, IStmt program) {
         this.exeStack = exeStack;
         this.symTable = symTable;
         this.out = out;
-        this.fileTable=fileTable;
+        this.fileTable = fileTable;
         this.originalProgram = program;
         this.exeStack.push(program);
     }
 
+    // Creates a state with empty structures
+    public static PrgState of(IStmt program) {
+        return new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(),
+                new MyDictionary<>(), program);
+    }
+
     public IStack<IStmt> getExeStack() { return exeStack; }
     public void setExeStack(IStack<IStmt> exeStack) { this.exeStack = exeStack; }
-
 
     public IDictionary<String, IValue> getSymTable() { return symTable; }
     public void setSymTable(IDictionary<String, IValue> symTable) { this.symTable = symTable; }
@@ -38,26 +44,20 @@ public class PrgState {
     public IList<IValue> getOut() { return out; }
     public void setOut(IList<IValue> out) { this.out = out; }
 
-    public IDictionary<StringValue, BufferedReader> getFileTable() {
-        return fileTable;
-    }
-    public void setFileTable(IDictionary<StringValue,BufferedReader> fileTable)
-    {
-        this.fileTable=fileTable;
-    } //getter and setter added
+    public IDictionary<StringValue, BufferedReader> getFileTable() { return fileTable; }
+    public void setFileTable(IDictionary<StringValue, BufferedReader> fileTable) { this.fileTable = fileTable; }
 
     public IStmt getOriginalProgram() { return originalProgram; }
 
     @Override
-    public String toString()
-    {
-        return "ExeStack:\n" + exeStack + "\nSymTable:\n" + symTable + "\nOut:\n" + out + "\nFileTable:\n"+ fileTable.toMap().keySet() + "-".repeat(30);
+    public String toString() {
+        return "ExeStack:\n" + exeStack + "\nSymTable:\n" + symTable + "\nOut:\n" + out
+                + "\nFileTable:\n" + fileTable.toMap().keySet() + "\n" + "-".repeat(30);
     }
 
-    public String toLogString()
-    {
+    // Text written to the log file after every step
+    public String toLogString() {
         var sb = new StringBuilder();
-
         sb.append("ExeStack:\n");
         exeStack.toList().forEach(s -> sb.append(s).append('\n'));
         sb.append("SymTable:\n");
@@ -69,4 +69,3 @@ public class PrgState {
         return sb.toString();
     }
 }
-
