@@ -11,14 +11,15 @@ import interpreter.model.value.IValue;
 import interpreter.model.value.StringValue;
 
 import java.io.BufferedReader;
-
+//represents the complete execution state of a running program
 public class PrgState {
-    private IStack<IStmt> exeStack;
-    private IDictionary<String, IValue> symTable;
-    private IList<IValue> out;
-    private IDictionary<StringValue, BufferedReader> fileTable;
-    private final IStmt originalProgram;
+    private IStack<IStmt> exeStack; //stack of stats left to execute
+    private IDictionary<String, IValue> symTable; //maps variable names to their current values
+    private IList<IValue> out; //stores output vals printed by program
+    private IDictionary<StringValue, BufferedReader> fileTable; //maps open file names to their buffreader streams
+    private final IStmt originalProgram; //backup of the initial program statement
 
+    //initializes the program state with the given structs and pushes the initial prog onto the stack
     public PrgState(IStack<IStmt> exeStack, IDictionary<String, IValue> symTable, IList<IValue> out,
                     IDictionary<StringValue, BufferedReader> fileTable, IStmt program) {
         this.exeStack = exeStack;
@@ -29,12 +30,21 @@ public class PrgState {
         this.exeStack.push(program);
     }
 
-    // Creates a state with empty structures
-    public static PrgState of(IStmt program) {
+    // Creates a state with empty structures in one place
+    //so when the constructor changes, only the factory
+    //changes and not every new prgstate call in the code
+    //and the tests
+    public static PrgState of(IStmt program)
+    {
         return new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(),
                 new MyDictionary<>(), program);
     }
+    //the reason we used of is because we added new structures and we update
+    //the factory method, we dont need to change all of the test files one by one
+    //stattic factory method its name
 
+
+    //getters and setters for program
     public IStack<IStmt> getExeStack() { return exeStack; }
     public void setExeStack(IStack<IStmt> exeStack) { this.exeStack = exeStack; }
 
@@ -49,6 +59,7 @@ public class PrgState {
 
     public IStmt getOriginalProgram() { return originalProgram; }
 
+    //it returns a formatted string representation of the current state for console output
     @Override
     public String toString() {
         return "ExeStack:\n" + exeStack + "\nSymTable:\n" + symTable + "\nOut:\n" + out
@@ -68,4 +79,9 @@ public class PrgState {
         fileTable.toMap().keySet().forEach(f -> sb.append(f.val()).append('\n'));
         return sb.toString();
     }
+
+    //both tostring and tologstring utilize filetable tomap keyset
+    //this is because there is no value in printing the memory
+    //address of the bufferreader object, which resides the value
+    //portion, as we only wish to see the names of currently open files
 }

@@ -38,3 +38,10 @@ public class Repository implements IRepository {
         }
     }
 }
+
+//the log is written after every step and each time the file is opened
+//written, flushed and closed. so by the time next statement runs everything
+//before it is already saved on disk
+
+//We open, write and close the log file on every step, in append mode, so every state is already saved on disk.
+// If a later statement throws an exception, nothing that was logged before it is lost

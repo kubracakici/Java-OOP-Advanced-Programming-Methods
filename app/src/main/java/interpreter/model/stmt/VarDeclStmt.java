@@ -22,3 +22,6 @@ public record VarDeclStmt(String name, IType type) implements IStmt {
         return type + " " + name;
     }
 }
+
+//VarDeclStmt calls type.defaultValue() on the IType interface, so each type provides its own
+// default value and a new type like StringType works without changing any existing class

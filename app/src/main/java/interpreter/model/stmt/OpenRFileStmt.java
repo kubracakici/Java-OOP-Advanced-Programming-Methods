@@ -53,3 +53,8 @@ public record OpenRFileStmt(IExp exp) implements IStmt
         return "openRFile(" + exp + ")";
     }
 }
+//try & try with sources difference is how long the file must stay open
+//try with resources closes the resource at the end of its block
+//in repo. the file is used and finished in one call
+//in this file the resader must stay open for later readFile stats so
+//only closeRFile closes it

@@ -46,6 +46,8 @@ public record ReadFileStmt(IExp exp, String varName) implements IStmt
 
         return state;
     }
+    //We catch Java exceptions inside the statement and rethrow them as our own StatementException with a clear message,
+    // so the controller and the view only ever see MyException, and RunExampleCommand prints the error without crashing the menu.
 
     @Override
     public String toString()

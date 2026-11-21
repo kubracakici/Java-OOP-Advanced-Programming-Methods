@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FileStmtTest
 {
+    //tempdir gives every test a fresh temporary folder where it creates its own input files,
+    // so tests are independent of the working directory and of each other, and they leave nothing behind.
     @TempDir
     Path dir;
 

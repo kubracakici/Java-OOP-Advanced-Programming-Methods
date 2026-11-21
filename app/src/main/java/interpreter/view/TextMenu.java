@@ -32,3 +32,7 @@ public class TextMenu {
         }
     }
 }
+
+//the reason that text menu doesnt know what command files do is
+// every menu option is a Command object, and TextMenu only calls execute(),
+// so adding an option means adding one class and one line in Main, without changing the menu.

@@ -11,4 +11,9 @@ public interface IDictionary<K, V> {
     Map<K, V> toMap();
 }
 
+
+
 //stocks the var names and their current values - a dictionary type
+
+//toMap() returns an immutable copy, so callers like toLogString ,
+//can read the content but cannot change the internal map and bypass the rules of the ADT

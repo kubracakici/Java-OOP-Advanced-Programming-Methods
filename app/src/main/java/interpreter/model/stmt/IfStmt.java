@@ -27,3 +27,12 @@ public record IfStmt(IExp cond, IStmt thenS, IStmt elseS) implements IStmt {
         return "(if " + cond + " then " + thenS + " else " + elseS + ")";
     }
 }
+//exestack holds everything that needs to ne executed and controller oneStep
+//always pops a statement and executes it,
+//ifstmt follows this model so it only evaluates the condition and decides
+//which branch is the next then pushes the branch ontp the stack
+//the branch runs later in its own oneStep
+
+//one step -> one statement if this file is called thenSçexecute(state)
+//directly, a single one step would run both the if and the chosen branch
+//the state after the if would never appear in log/screen

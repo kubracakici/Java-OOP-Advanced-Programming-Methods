@@ -15,7 +15,7 @@ public class Examples {
             )
     );
 
-    // Example twoo: int a; int b; a=2+3*5; b=a+1; print(b)
+    // Example two: int a; int b; a=2+3*5; b=a+1; print(b)
     public static final IStmt EX2 = new CompStmt(
             new VarDeclStmt("a", new IntType()),
             new CompStmt(
