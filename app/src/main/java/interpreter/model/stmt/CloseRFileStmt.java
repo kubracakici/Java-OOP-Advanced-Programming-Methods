@@ -14,7 +14,7 @@ public record CloseRFileStmt(IExp exp) implements IStmt
     public PrgState execute(PrgState state) throws MyException
     {
         //the file name should be a string
-        if (!(exp.eval(state.getSymTable())instanceof StringValue fileName))
+        if (!(exp.eval(state.getSymTable(), state.getHeap())instanceof StringValue fileName))
             throw new StatementException("closeRFile: " + exp + " is not a string");
         var fileTable = state.getFileTable();
         //we check if the file is open to close it

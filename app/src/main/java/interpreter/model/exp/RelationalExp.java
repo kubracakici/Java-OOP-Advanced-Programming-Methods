@@ -3,6 +3,7 @@ package interpreter.model.exp;
 import interpreter.exceptions.ExpressionException;
 import interpreter.exceptions.MyException;
 import interpreter.model.adt.IDictionary;
+import interpreter.model.adt.IHeap;
 import interpreter.model.value.BoolValue;
 import interpreter.model.value.IValue;
 import interpreter.model.value.IntValue;
@@ -14,14 +15,14 @@ public record RelationalExp(RelOp op, IExp left, IExp right) implements IExp {
 
 
     @Override
-    public IValue eval(IDictionary<String, IValue> symTable) throws MyException {
+    public IValue eval(IDictionary<String, IValue> symTable, IHeap heap) throws MyException {
         //we evaluate left operand and ensure it is an integer
-        IValue v1 = left.eval(symTable);
+        IValue v1 = left.eval(symTable, heap);
         if (!(v1 instanceof IntValue(int n1))) {
             throw new ExpressionException("First operand is not an integer");
         }
         //we evaluate right operand and ensure it is an integer
-        IValue v2 = right.eval(symTable);
+        IValue v2 = right.eval(symTable, heap);
         if (!(v2 instanceof IntValue(int n2))) {
             throw new ExpressionException("Second operand is not an integer");
         }

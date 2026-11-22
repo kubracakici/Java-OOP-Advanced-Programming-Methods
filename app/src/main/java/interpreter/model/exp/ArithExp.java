@@ -5,16 +5,17 @@ import interpreter.exceptions.MyException;
 import interpreter.model.adt.IDictionary;
 import interpreter.model.value.IValue;
 import interpreter.model.value.IntValue;
+import interpreter.model.adt.IHeap;
 
 public record ArithExp(ArithOp op, IExp left, IExp right) implements IExp {
     @Override
-    public IValue eval(IDictionary<String, IValue> symTable) throws MyException {
-        IValue v1 = left.eval(symTable);
+    public IValue eval(IDictionary<String, IValue> symTable, IHeap heap) throws MyException {
+        IValue v1 = left.eval(symTable, heap);
         if (!(v1 instanceof IntValue(int n1))) {
             throw new ExpressionException("First operand is not an integer");
         }
 
-        IValue v2 = right.eval(symTable);
+        IValue v2 = right.eval(symTable, heap);
         if (!(v2 instanceof IntValue(int n2))) {
             throw new ExpressionException("Second operand is not an integer");
         }
