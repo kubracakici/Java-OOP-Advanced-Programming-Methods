@@ -3,6 +3,7 @@ package interpreter.model.exp;
 import interpreter.exceptions.ExpressionException;
 import interpreter.exceptions.MyException;
 import interpreter.model.adt.MyDictionary;
+import interpreter.model.adt.MyHeap;
 import interpreter.model.value.BoolValue;
 import interpreter.model.value.IntValue;
 import org.junit.jupiter.api.Test;
@@ -16,13 +17,13 @@ class LogicExpTest {
         IExp andExp = new LogicExp(LogicOp.AND, new ValueExp(new BoolValue(true)), new ValueExp(new BoolValue(false)));
         IExp orExp = new LogicExp(LogicOp.OR, new ValueExp(new BoolValue(true)), new ValueExp(new BoolValue(false)));
 
-        assertEquals(new BoolValue(false), andExp.eval(dict));
-        assertEquals(new BoolValue(true), orExp.eval(dict));
+        assertEquals(new BoolValue(false), andExp.eval(dict, new MyHeap()));
+        assertEquals(new BoolValue(true), orExp.eval(dict, new MyHeap()));
     }
 
     @Test
     void testNonBooleanOperandThrows() {
         IExp e = new LogicExp(LogicOp.AND, new ValueExp(new IntValue(1)), new ValueExp(new BoolValue(true)));
-        assertThrows(ExpressionException.class, () -> e.eval(new MyDictionary<>()));
+        assertThrows(ExpressionException.class, () -> e.eval(new MyDictionary<>(), new MyHeap()));
     }
 }
