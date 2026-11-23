@@ -1,4 +1,5 @@
 package interpreter.controller;
+
 import interpreter.exceptions.MyException;
 import interpreter.exceptions.RepositoryException;
 import interpreter.model.PrgState;
@@ -22,11 +23,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class ControllerTest {
     @TempDir
     Path dir; // fresh temporary folder for every test
@@ -39,6 +35,7 @@ class ControllerTest {
         return state;
     }
 
+    // ---------- A2 ----------
     @Test
     void testExample2() throws MyException {
         PrgState state = run(Examples.EX2);
@@ -46,16 +43,18 @@ class ControllerTest {
         assertEquals(new IntValue(18), state.getOut().get(0));
     }
 
+    // ---------- A3: log file ----------
     @Test
-    void logFileContainsTheFourSectionsInOrder() throws Exception {
+    void logFileContainsTheFiveSectionsInOrder() throws Exception {
         run(Examples.EX1);
         String log = Files.readString(dir.resolve("log.txt"));
         int a = log.indexOf("ExeStack:");
         int b = log.indexOf("SymTable:");
         int c = log.indexOf("Out:");
         int d = log.indexOf("FileTable:");
+        int e = log.indexOf("Heap:");
         // indexOf returns -1 when missing, so check 0 <= a first
-        assertTrue(0 <= a && a < b && b < c && c < d);
+        assertTrue(0 <= a && a < b && b < c && c < d && d < e);
     }
 
     @Test
@@ -63,7 +62,7 @@ class ControllerTest {
         run(Examples.EX1);
         String log = Files.readString(dir.resolve("log.txt"));
         int count = log.split("ExeStack:", -1).length - 1;
-        // EX1 needs 5 oneStep calls, so 5 + 1 (initial state) = 6 log entries
+        // EX1 needs 5 oneStep calls: 1 initial entry + 2 per step (before and after the collection) = 11
         assertEquals(11, count);
     }
 
@@ -76,6 +75,7 @@ class ControllerTest {
         assertThrows(RepositoryException.class, ctrl::allStep);
     }
 
+    // ---------- A3: files and relational expressions ----------
     @Test
     void fileExampleReadsBothNumbersAndClosesTheFile() throws Exception {
         Path in = dir.resolve("test.in");
@@ -103,10 +103,43 @@ class ControllerTest {
         assertEquals(new IntValue(5), s.getOut().get(0));
     }
 
+    // ---------- A4: heap, garbage collector, while ----------
+    @Test
+    void example6PutsTwoReferencesInTheHeap() throws MyException {
+        PrgState s = run(Examples.EX6);
+        assertEquals(new RefValue(1, new IntType()), s.getOut().get(0));
+        assertEquals(new RefValue(2, new RefType(new IntType())), s.getOut().get(1));
+        assertEquals(Map.of(1, new IntValue(20), 2, new RefValue(1, new IntType())),
+                s.getHeap().getContent());
+    }
+
+    @Test
+    void example7ReadsTheHeapAndPrintsTwentyAndTwentyFive() throws MyException {
+        PrgState s = run(Examples.EX7);
+        assertEquals(new IntValue(20), s.getOut().get(0));
+        assertEquals(new IntValue(25), s.getOut().get(1));
+    }
+
+    @Test
+    void example8WritesTheHeap() throws MyException {
+        PrgState s = run(Examples.EX8);
+        assertEquals(new IntValue(20), s.getOut().get(0));
+        assertEquals(new IntValue(35), s.getOut().get(1));
+        assertEquals(Map.of(1, new IntValue(30)), s.getHeap().getContent());
+    }
+
     @Test
     void example9PrintsTwentyWithTheSafeCollector() throws MyException {
         PrgState s = run(Examples.EX9);
         assertEquals(new IntValue(20), s.getOut().get(0));
+    }
+
+    @Test
+    void example10CountsDownWithTheWhileLoop() throws MyException {
+        PrgState s = run(Examples.EX10);
+        for (int i = 0; i < 5; i++) {
+            assertEquals(new IntValue(4 - i), s.getOut().get(i));   // 4, 3, 2, 1, 0
+        }
     }
 
     @Test
