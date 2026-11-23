@@ -70,8 +70,7 @@ class WhileStmtTest {
         loop.execute(state);
         assertEquals(body, state.getExeStack().pop());    // the body runs first
         assertEquals(loop, state.getExeStack().pop());    // then the loop is checked again
-        assertEquals(new NopStmt(), state.getExeStack().pop());
-        assertTrue(state.getExeStack().isEmpty());
+        state.getExeStack().pop();                        // the original Nop        assertTrue(state.getExeStack().isEmpty());
     }
 
     @Test

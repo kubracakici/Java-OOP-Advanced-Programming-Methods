@@ -25,16 +25,20 @@ public class Controller {
         return crtStmt.execute(state);
     }
 
-    // Runs the whole program and logs the state after every step
+    // Runs the whole program; after every step the garbage collector cleans the heap
     public void allStep() throws MyException {
         PrgState prg = repo.getCrtPrg();
-        repo.logPrgStateExec();             // log the initial state
+        repo.logPrgStateExec();                 // initial state
         if (displayFlag) {
             System.out.println(prg);
         }
         while (!prg.getExeStack().isEmpty()) {
             oneStep(prg);
-            repo.logPrgStateExec();         // log the state after every step
+            repo.logPrgStateExec();             // state before the collection
+            prg.getHeap().setContent(GarbageCollector.safeGarbageCollector(
+                    GarbageCollector.getAddrFromSymTable(prg.getSymTable().toMap().values()),
+                    prg.getHeap().getContent()));
+            repo.logPrgStateExec();             // state after the collection
             if (displayFlag) {
                 System.out.println(prg);
             }

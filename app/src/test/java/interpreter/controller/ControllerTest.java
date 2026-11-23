@@ -1,14 +1,26 @@
 package interpreter.controller;
-
 import interpreter.exceptions.MyException;
 import interpreter.exceptions.RepositoryException;
 import interpreter.model.PrgState;
+import interpreter.model.exp.ValueExp;
+import interpreter.model.stmt.CompStmt;
 import interpreter.model.stmt.IStmt;
+import interpreter.model.stmt.NewStmt;
+import interpreter.model.stmt.VarDeclStmt;
+import interpreter.model.type.IntType;
+import interpreter.model.type.RefType;
 import interpreter.model.value.IntValue;
+import interpreter.model.value.RefValue;
 import interpreter.repository.Repository;
 import interpreter.view.Examples;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,7 +64,7 @@ class ControllerTest {
         String log = Files.readString(dir.resolve("log.txt"));
         int count = log.split("ExeStack:", -1).length - 1;
         // EX1 needs 5 oneStep calls, so 5 + 1 (initial state) = 6 log entries
-        assertEquals(6, count);
+        assertEquals(11, count);
     }
 
     @Test
@@ -89,5 +101,22 @@ class ControllerTest {
     void example5PrintsFive() throws MyException {
         PrgState s = run(Examples.EX5);
         assertEquals(new IntValue(5), s.getOut().get(0));
+    }
+
+    @Test
+    void example9PrintsTwentyWithTheSafeCollector() throws MyException {
+        PrgState s = run(Examples.EX9);
+        assertEquals(new IntValue(20), s.getOut().get(0));
+    }
+
+    @Test
+    void collectorRemovesALocationThatNothingCanReachAnymore() throws MyException {
+        // Ref int v; new(v,20); new(v,30): after the second new, location 1 is garbage
+        IStmt p = new CompStmt(new VarDeclStmt("v", new RefType(new IntType())),
+                new CompStmt(new NewStmt("v", new ValueExp(new IntValue(20))),
+                        new NewStmt("v", new ValueExp(new IntValue(30)))));
+        PrgState s = run(p);
+        assertFalse(s.getHeap().isDefined(1));
+        assertTrue(s.getHeap().isDefined(2));
     }
 }
